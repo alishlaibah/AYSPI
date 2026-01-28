@@ -84,7 +84,6 @@
     line-height: 1.4;
     font-size: clamp(12px, 1.4vw, 14px);
 
-    /* ✅ Force single line with ellipsis truncation */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -124,7 +123,6 @@
     flex-direction: column;
     gap: clamp(8px, 1vh, 12px);
 
-    /* Constrain max height so it doesn't stretch too tall */
     max-height: 100%;
 }
 

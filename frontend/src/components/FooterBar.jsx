@@ -16,7 +16,7 @@ export default function FooterBar() {
             <div className="links">
                 <a
                     className="iconBtn"
-                    href="https://github.com/alishlaibah"
+                    href="https://github.com/alishlaibah/AYSPI"
                     target="_blank"
                     rel="noreferrer"
                     aria-label="GitHub"
