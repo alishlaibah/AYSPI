@@ -1,0 +1,11 @@
+venv/
+.DS_Store
+__pycache__/
+
+# Python virtual environments
+.venv/
+venv/
+venv_asl/
+
+# Node
+node_modules/

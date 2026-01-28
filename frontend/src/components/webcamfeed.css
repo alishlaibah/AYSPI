@@ -1,0 +1,168 @@
+.webcam-shell {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(8px, 1vh, 12px);
+
+    flex: 1 1 auto;
+    min-height: 0;
+    min-width: 0;
+    width: 100%;
+}
+
+.webcam-stage {
+    position: relative;
+
+    width: 100%;
+    max-width: 900px;
+    margin-inline: auto;
+
+    aspect-ratio: var(--cam-aspect, 1.3333);
+
+    flex: 1 1 auto;
+    min-height: 0;
+
+    max-height: min(75vh, calc(100vh - 240px));
+
+    border-radius: clamp(14px, 2vw, 20px);
+    overflow: hidden;
+
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    box-shadow:
+        0 30px 70px rgba(0, 0, 0, 0.55),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+}
+
+
+.webcam-video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center center;
+    display: block;
+    
+    background: #000;
+}
+
+.webcam-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.webcam-badge {
+    position: absolute;
+    left: clamp(10px, 2%, 14px);
+    top: clamp(10px, 2%, 14px);
+
+    min-width: 48px;
+    padding: clamp(8px, 1.5vw, 10px) clamp(10px, 2vw, 14px);
+    border-radius: clamp(12px, 1.5vw, 16px);
+
+    font-family: var(--display-font);
+    font-size: clamp(22px, 3vw, 30px);
+    font-weight: 800;
+
+    color: rgba(234, 240, 255, 0.95);
+    background: linear-gradient(
+        135deg,
+        rgba(124, 92, 255, 0.85),
+        rgba(77, 225, 255, 0.45)
+    );
+    border: 1px solid rgba(255, 255, 255, 0.16);
+
+    box-shadow:
+        0 14px 34px rgba(124, 92, 255, 0.28),
+        0 10px 22px rgba(77, 225, 255, 0.12);
+}
+
+.webcam-meta {
+    flex: 0 0 auto;
+    display: grid;
+    gap: 6px;
+    padding: clamp(10px, 1.5vw, 12px) clamp(12px, 1.5vw, 14px);
+    border-radius: clamp(14px, 1.5vw, 18px);
+
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.webcam-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: clamp(11px, 1.2vw, 13px);
+    color: rgba(234, 240, 255, 0.70);
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.webcam-label {
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: clamp(9px, 1vw, 10.5px);
+    color: rgba(234, 240, 255, 0.55);
+}
+
+.webcam-value {
+    font-size: clamp(12px, 1.3vw, 14px);
+    font-weight: 700;
+    color: rgba(234, 240, 255, 0.92);
+}
+
+.webcam-status {
+    font-size: clamp(11px, 1.2vw, 12.5px);
+    color: rgba(234, 240, 255, 0.62);
+}
+
+.webcam-error {
+    font-size: 12px;
+    color: #ff8a7a;
+}
+
+@media (max-width: 720px) {
+    .webcam-stage {
+        max-height: 60vh;
+    }
+
+    .webcam-badge {
+        font-size: 24px;
+        padding: 8px 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .webcam-stage {
+        border-radius: 14px;
+    }
+
+    .webcam-badge {
+        font-size: 20px;
+        padding: 6px 10px;
+        border-radius: 10px;
+        min-width: 40px;
+    }
+
+    .webcam-meta {
+        padding: 10px;
+    }
+}
+
+@media (max-height: 700px) and (min-width: 721px) {
+    .webcam-stage {
+        max-height: min(65vh, calc(100vh - 220px));
+    }
+
+    .webcam-meta {
+        padding: 8px 12px;
+        gap: 4px;
+    }
+}
+
+@media (max-height: 600px) and (min-width: 721px) {
+    .webcam-stage {
+        max-height: min(58vh, calc(100vh - 200px));
+    }
+}

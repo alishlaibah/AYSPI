@@ -1,0 +1,41 @@
+:root {
+    --display-font: "Inter", system-ui, -apple-system, Segoe UI, sans-serif;
+    --body-font: "Inter", system-ui, -apple-system, Segoe UI, sans-serif;
+
+    --text: #eaf0ff;
+    --muted: rgba(234, 240, 255, 0.58);
+    --cyan: #4de1ff;
+    --violet: #7c5cff;
+
+    color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    min-height: 100%;
+    font-family: var(--body-font);
+    background: #070a12;
+    
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+button,
+input,
+textarea {
+    font-family: inherit;
+}
+
+#root {
+    min-height: 100vh;
+}

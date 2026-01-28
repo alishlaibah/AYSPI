@@ -1,0 +1,9 @@
+{
+  "seq_len": 30,
+  "features_per_frame": 63,
+  "num_classes": 27,
+  "scaler_path": "scaler.pkl",
+  "model_path": "asl_sequence_classifier.keras",
+  "best_model_path": "best_asl_sequence_classifier.keras",
+  "normalized_folder_used": "dataset_normalized"
+}

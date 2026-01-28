@@ -1,0 +1,367 @@
+.page {
+    height: 100vh;
+    width: 100%;
+
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+
+    overflow: hidden;
+
+    color: var(--text);
+    background:
+        radial-gradient(circle at 10% 12%, rgba(124, 92, 255, 0.22), transparent 45%),
+        radial-gradient(circle at 88% 10%, rgba(77, 225, 255, 0.14), transparent 42%),
+        radial-gradient(circle at 60% 90%, rgba(124, 92, 255, 0.14), transparent 48%),
+        linear-gradient(135deg, #070a12 0%, #0b1430 55%, #111a3c 100%);
+    background-attachment: fixed;
+}
+
+.stage {
+    padding: clamp(12px, 2vh, 20px) clamp(14px, 2.5vw, 28px);
+
+    display: grid;
+    grid-template-columns: 1.7fr 1fr;
+    gap: clamp(14px, 2vw, 20px);
+
+    min-height: 0;
+    min-width: 0;
+
+    align-items: stretch;
+
+    overflow: hidden;
+}
+
+.stage > * {
+    min-width: 0;
+    min-height: 0;
+}
+
+.cameraColumn {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(8px, 1.5vh, 14px);
+
+    min-height: 0;
+    min-width: 0;
+}
+
+.refColumn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+
+    min-height: 0;
+    min-width: 0;
+}
+
+
+.cameraHeader {
+    flex: 0 0 auto;
+    padding: 4px 2px 0;
+}
+
+.eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    font-size: clamp(9px, 1.2vw, 11px);
+    color: var(--muted);
+    margin: 0 0 6px;
+}
+
+.headline {
+    font-family: var(--display-font);
+    font-weight: 800;
+    font-size: clamp(20px, 2.5vw, 38px);
+    line-height: 1.1;
+    margin: 0 0 6px;
+}
+
+.subhead {
+    margin: 0;
+    max-width: 100%;
+    color: rgba(234, 240, 255, 0.78);
+    line-height: 1.4;
+    font-size: clamp(12px, 1.4vw, 14px);
+
+    /* ✅ Force single line with ellipsis truncation */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+.glassCard {
+    border-radius: clamp(16px, 2vw, 22px);
+    background: rgba(255, 255, 255, 0.045);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    box-shadow:
+        0 26px 60px rgba(0, 0, 0, 0.45),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+}
+
+
+.cameraCard {
+    flex: 1 1 auto;
+    min-height: 0;
+
+    padding: clamp(10px, 1.5vw, 14px);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(8px, 1vh, 12px);
+}
+
+
+.refCard {
+    padding: clamp(10px, 1.5vw, 14px);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(8px, 1vh, 12px);
+
+    /* Constrain max height so it doesn't stretch too tall */
+    max-height: 100%;
+}
+
+
+.cardTopRow {
+    flex: 0 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.cardTitle {
+    font-family: var(--display-font);
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    font-size: clamp(12px, 1.3vw, 14px);
+    color: rgba(234, 240, 255, 0.92);
+}
+
+.cardCaption {
+    margin-top: 3px;
+    color: rgba(234, 240, 255, 0.62);
+    font-size: clamp(11px, 1.2vw, 12.5px);
+}
+
+.chip {
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.055);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    color: rgba(234, 240, 255, 0.72);
+    font-size: clamp(10px, 1.1vw, 12px);
+    white-space: nowrap;
+}
+
+.chipStrong {
+    color: rgba(234, 240, 255, 0.92);
+}
+
+.refHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.refEyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    font-size: clamp(9px, 1vw, 10.5px);
+    color: rgba(234, 240, 255, 0.55);
+}
+
+.refTitle {
+    margin-top: 4px;
+    font-family: var(--display-font);
+    font-weight: 720;
+    font-size: clamp(14px, 1.4vw, 16px);
+}
+
+.topControls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.045);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    cursor: pointer;
+    user-select: none;
+}
+
+.toggle input {
+    display: none;
+}
+
+.toggleTrack {
+    width: 32px;
+    height: 17px;
+    border-radius: 999px;
+    position: relative;
+    background: rgba(255, 255, 255, 0.10);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    transition: background 160ms ease;
+}
+
+.toggleTrack::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 3px;
+    width: 11px;
+    height: 11px;
+    border-radius: 999px;
+    transform: translateY(-50%);
+    background: rgba(234, 240, 255, 0.85);
+    transition: transform 160ms ease;
+}
+
+.toggle input:checked + .toggleTrack {
+    background: rgba(124, 92, 255, 0.35);
+    border-color: rgba(124, 92, 255, 0.45);
+}
+
+.toggle input:checked + .toggleTrack::after {
+    transform: translate(15px, -50%);
+    background: rgba(234, 240, 255, 0.95);
+}
+
+.toggleLabel {
+    font-size: clamp(10px, 1.1vw, 12px);
+    color: rgba(234, 240, 255, 0.74);
+}
+
+
+@media (max-width: 960px) {
+    .stage {
+        grid-template-columns: 1.5fr 1fr;
+        gap: 12px;
+    }
+
+    .chip:not(:first-of-type) {
+        display: none;
+    }
+}
+
+
+@media (max-width: 720px) {
+    .page {
+        height: auto;
+        min-height: 100vh;
+        overflow: visible;
+    }
+
+    .stage {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto;
+        gap: 20px;
+        padding: 14px;
+        overflow: visible;
+    }
+
+    .cameraColumn {
+        order: 1;
+    }
+
+    .refColumn {
+        order: 2;
+        justify-content: flex-start;
+    }
+
+    .subhead {
+        white-space: normal;
+        overflow: visible;
+        text-overflow: clip;
+    }
+
+    .chip {
+        display: none;
+    }
+}
+
+
+@media (max-width: 480px) {
+    .stage {
+        padding: 10px;
+        gap: 16px;
+    }
+
+    .cameraCard,
+    .refCard {
+        padding: 10px;
+    }
+
+    .cardTopRow {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .topControls {
+        width: 100%;
+        justify-content: flex-end;
+    }
+}
+
+
+@media (max-height: 700px) and (min-width: 721px) {
+    .stage {
+        padding-top: 8px;
+        padding-bottom: 8px;
+        gap: 10px;
+    }
+
+    .cameraColumn {
+        gap: 6px;
+    }
+
+    .cameraHeader {
+        padding-top: 0;
+    }
+
+    .eyebrow {
+        margin-bottom: 4px;
+        font-size: 9px;
+    }
+
+    .headline {
+        font-size: clamp(18px, 2.2vw, 28px);
+        margin-bottom: 4px;
+    }
+
+    .subhead {
+        font-size: 12px;
+    }
+
+    .cameraCard,
+    .refCard {
+        padding: 10px;
+        gap: 8px;
+    }
+}
+
+@media (max-height: 580px) {
+    .page {
+        height: auto;
+        min-height: 100vh;
+        overflow: visible;
+    }
+}
