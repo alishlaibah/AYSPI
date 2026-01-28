@@ -10,6 +10,7 @@ export default function FooterBar() {
                 <span className="tech">Numpy</span>
                 <span className="tech">Python</span>
                 <span className="tech">FastAPI</span>
+                <span className="tech">MediaPip</span>
             </div>
 
             <div className="links">
