@@ -20,6 +20,12 @@ This project uses MediaPipe hand landmark coordinates as shown below:
 
 # Run Locally
 
+## Prerequisites
+
+- Python 3.10.x
+- Node.js + npm (for the frontend)
+- A webcam for live demo/testing
+
 ## Backend (FastAPI)
 
 From the project root:
