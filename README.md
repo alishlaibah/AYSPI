@@ -1,7 +1,8 @@
 A project to translate sign language gestures into real-time subtitles using AI and computer vision.
 
-Quick demo of my Sign Language  Subtitle AI detecting the letter A.
-(And yes, that is a sword in the background, doesn’t everyone keep one in their room in case the crusaders come back?)
+🌐 Live site: [ayspi.com](https://ayspi.com)
+
+Quick demo of detecting the letter A.
 
 ## Demo
 
