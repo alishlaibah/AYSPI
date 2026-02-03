@@ -17,7 +17,7 @@ function App() {
                     <div className="cameraHeader">
                         <h1 className="headline">Real-time ASL recognition.</h1>
                         <p className="subhead">
-                            AYSPI uses a custom AI model to recognize fingerspelled letters directly from your webcam, and shows the result instantly.
+                            AYSPI uses a custom AI model to recognize fingerspelled letters from your webcam, <strong>first load may take a minute.</strong>
                         </p>
                     </div>
 
