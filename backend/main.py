@@ -1,8 +1,10 @@
-from backend.predict import get_metadata, predict
 from typing import List
-from pydantic import BaseModel
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+
+from backend.predict import get_metadata, predict
 
 app = FastAPI()
 

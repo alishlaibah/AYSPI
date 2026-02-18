@@ -1,5 +1,3 @@
-# models/asl_sequence_classifier.py
-
 from tensorflow.keras import Sequential
 from tensorflow.keras.layers import (
     InputLayer,

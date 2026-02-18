@@ -22,6 +22,7 @@ function WebcamFeed({ showLandmarks = true }) {
   const [prediction, setPrediction] = useState({ letter: "-", confidence: 0 });
   const [status, setStatus] = useState("Waiting for hand...");
   const [error, setError] = useState("");
+  const [backendInfo, setBackendInfo] = useState("");
 
   useEffect(() => {
     showLandmarksRef.current = showLandmarks;
@@ -38,10 +39,6 @@ function WebcamFeed({ showLandmarks = true }) {
     if (videoWidth && videoHeight) {
       const aspectRatio = videoWidth / videoHeight;
       stageEl.style.setProperty("--cam-aspect", aspectRatio.toFixed(6));
-
-      console.log(
-        `Camera resolution: ${videoWidth}×${videoHeight} (aspect: ${aspectRatio.toFixed(3)})`
-      );
     }
   }, []);
 
@@ -59,11 +56,11 @@ function WebcamFeed({ showLandmarks = true }) {
       .then((data) => {
         if (!isMounted) return;
         if (data?.seq_len) setSeqLen(data.seq_len);
+        setBackendInfo("");
       })
-      .catch((err) => {
+      .catch(() => {
         if (!isMounted) return;
-        console.warn("Metadata fetch failed:", err);
-        setError("Failed to fetch");
+        setBackendInfo("Backend is waking up - predictions will appear shortly.");
       });
 
     return () => {
@@ -71,12 +68,10 @@ function WebcamFeed({ showLandmarks = true }) {
     };
   }, []);
 
-  // Reset sequence if seqLen changes
   useEffect(() => {
     sequenceRef.current = [];
   }, [seqLen]);
 
-  // Start webcam stream
   useEffect(() => {
     let stream;
 
@@ -88,9 +83,8 @@ function WebcamFeed({ showLandmarks = true }) {
           videoRef.current.srcObject = stream;
         }
       })
-      .catch((err) => {
-        console.error("Error accessing webcam:", err);
-        setError("Webcam permission denied or not available.");
+      .catch(() => {
+        setError("Camera access denied or unavailable.");
       });
 
     return () => {
@@ -162,6 +156,7 @@ function WebcamFeed({ showLandmarks = true }) {
 
       const landmarks = results.multiHandLandmarks[0];
       if (showLandmarksRef.current) {
+        // Map landmark coords to the stage's visible area (object-fit: contain)
         const scale = Math.min(stageW / videoW, stageH / videoH);
         const scaledW = videoW * scale;
         const scaledH = videoH * scale;
@@ -175,7 +170,7 @@ function WebcamFeed({ showLandmarks = true }) {
           z: lm.z,
         }));
 
-        ctx.strokeStyle = "#4DE1FF";
+        ctx.strokeStyle = "#C47A3A";
         ctx.lineWidth = 2;
         ctx.lineCap = "round";
         ctx.lineJoin = "round";
@@ -190,7 +185,7 @@ function WebcamFeed({ showLandmarks = true }) {
           ctx.stroke();
         }
 
-        ctx.fillStyle = "#7C5CFF";
+        ctx.fillStyle = "#2B5F6B";
 
         for (const lm of transformedLandmarks) {
           ctx.beginPath();
@@ -242,6 +237,7 @@ function WebcamFeed({ showLandmarks = true }) {
           return res.json();
         })
         .then((data) => {
+          setBackendInfo("");
           if (data?.error) {
             setError(data.error);
           } else {
@@ -255,8 +251,8 @@ function WebcamFeed({ showLandmarks = true }) {
             });
           }
         })
-        .catch((err) => {
-          setError(err.message || "Prediction failed");
+        .catch(() => {
+          setBackendInfo("Backend is waking up - predictions will appear shortly.");
         })
         .finally(() => {
           inFlightRef.current = false;
@@ -283,6 +279,8 @@ function WebcamFeed({ showLandmarks = true }) {
     };
   }, [seqLen]);
 
+  const confidencePercent = Math.round(prediction.confidence * 100);
+
   return (
     <div className="webcam-shell">
       <div className="webcam-stage" ref={stageRef}>
@@ -295,27 +293,38 @@ function WebcamFeed({ showLandmarks = true }) {
           onLoadedMetadata={handleVideoMetadata}
         />
         <canvas ref={canvasRef} className="webcam-canvas" />
-
-        <div className="webcam-badge" aria-live="polite">
-          {prediction.letter}
-        </div>
       </div>
 
-      <div className="webcam-meta">
-        <div className="webcam-row">
-          <span className="webcam-label">Prediction</span>
-          <span className="webcam-value">{prediction.letter}</span>
+      <div className="webcam-output">
+        <div className="webcam-prediction-row">
+          <div className="webcam-prediction-block">
+            <span className="webcam-label">Prediction</span>
+            <span className="webcam-prediction-letter">{prediction.confidence < 0.20 ? "Unknown" : prediction.letter}</span>
+          </div>
+
+          <div className="webcam-confidence-block">
+            <span className="webcam-label">Confidence</span>
+            <span className="webcam-confidence-value">{confidencePercent}%</span>
+            <div className="webcam-confidence-bar">
+              <div
+                className="webcam-confidence-fill"
+                style={{ width: `${confidencePercent}%` }}
+              />
+            </div>
+          </div>
         </div>
 
-        <div className="webcam-row">
-          <span className="webcam-label">Confidence</span>
-          <span className="webcam-value">
-            {Number(prediction.confidence).toFixed(2)}
-          </span>
+        <div className="webcam-status-row">
+          <span
+            className={`webcam-status-dot ${
+              status === "Hand detected" ? "webcam-status-dot--active" : ""
+            }`}
+          />
+          <span className="webcam-status-text">{status}</span>
         </div>
 
-        <div className="webcam-status">{status}</div>
-        {error ? <div className="webcam-error">{error}</div> : null}
+        {backendInfo && <div className="webcam-info">{backendInfo}</div>}
+        {error && <div className="webcam-error">{error}</div>}
       </div>
     </div>
   );

@@ -1,11 +1,17 @@
-venv/
-.DS_Store
+# Python
 __pycache__/
-
-# Python virtual environments
+*.pyc
 .venv/
-venv/
-venv_asl/
+venv*/
+env/
 
 # Node
 node_modules/
+frontend/dist/
+
+# Env
+.env
+.env.local
+
+# OS
+.DS_Store

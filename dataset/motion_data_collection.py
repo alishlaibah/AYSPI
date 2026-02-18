@@ -1,5 +1,6 @@
 import os
 import logging
+
 import cv2
 import mediapipe as mp
 import numpy as np
@@ -55,7 +56,6 @@ while True:
 
     key = cv2.waitKey(1) & 0xFF
 
-    
     if key == ord(" "):
         np.save("A.npy", np.array(all_samples, dtype=np.float32))
         break
@@ -96,7 +96,6 @@ while True:
 
         hand = seq_result.multi_hand_landmarks[0]
 
-        # append 63 vals
         for lm in hand.landmark:
             my_array.extend([lm.x, lm.y, lm.z])
 
@@ -106,11 +105,11 @@ while True:
         my_array.append(label_map[letter])
         if len(my_array) == EXPECTED_LEN:
             all_samples.append(my_array)
-            print(f"[OK] Sample saved for '{letter.upper()}' Total: {len(all_samples)}")
+            print(f"Saved '{letter.upper()}' — total: {len(all_samples)}")
         else:
-            print(f"[ERROR] Bad sample length ({len(my_array)}), expected {EXPECTED_LEN}. Not saved.")
+            print(f"Bad sample length ({len(my_array)}), expected {EXPECTED_LEN}. Not saved.")
     else:
-        print("[FAIL] Sequence capture failed (too many missed frames). Try again.")
+        print("Sequence capture failed (too many missed frames). Try again.")
 
 webcam.release()
 cv2.destroyAllWindows()

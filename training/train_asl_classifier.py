@@ -1,15 +1,13 @@
-# training/train_asl_classifier.py
-
 import os
 import sys
 import json
-import numpy as np
-import joblib
-import tensorflow as tf
 
+import joblib
+import numpy as np
+import tensorflow as tf
+from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import classification_report, confusion_matrix
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if PROJECT_ROOT not in sys.path:
@@ -56,7 +54,6 @@ def main():
     else:
         os.makedirs(normalized_folder, exist_ok=True)
         normalize_folder(dataset_folder, normalized_folder)
-
 
     X, y = load_normalized_dataset(normalized_folder)
 
@@ -136,7 +133,6 @@ def main():
 
     y_pred = np.argmax(model.predict(X_test_scaled, verbose=0), axis=1)
 
-
     final_model_path = os.path.join(models_folder, "asl_sequence_classifier.keras")
     model.save(final_model_path)
 
@@ -153,7 +149,6 @@ def main():
     metadata_path = os.path.join(models_folder, "metadata.json")
     with open(metadata_path, "w") as f:
         json.dump(metadata, f, indent=2)
-
 
 
 if __name__ == "__main__":
