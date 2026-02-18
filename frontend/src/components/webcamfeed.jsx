@@ -60,7 +60,7 @@ function WebcamFeed({ showLandmarks = true }) {
       })
       .catch(() => {
         if (!isMounted) return;
-        setBackendInfo("Backend is waking up - predictions will appear shortly.");
+        setBackendInfo("Backend is waking up. Predictions will appear shortly.");
       });
 
     return () => {
@@ -252,7 +252,7 @@ function WebcamFeed({ showLandmarks = true }) {
           }
         })
         .catch(() => {
-          setBackendInfo("Backend is waking up - predictions will appear shortly.");
+          setBackendInfo("Backend is waking up. Predictions will appear shortly.");
         })
         .finally(() => {
           inFlightRef.current = false;

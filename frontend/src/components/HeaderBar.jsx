@@ -8,7 +8,7 @@ export default function HeaderBar() {
   return (
     <header className="header" role="banner">
       <div className="header-inner container">
-        <a href="#" className="brand" aria-label="AYSPI — ASL Letter Recognizer">
+        <a href="#" className="brand" aria-label="AYSPI, ASL Letter Recognizer">
           <span className="brand-name">ayspi.com</span>
           <span className="brand-sub">ASL Letter Recognizer</span>
         </a>
