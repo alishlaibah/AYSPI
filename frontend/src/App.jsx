@@ -124,7 +124,7 @@ function App() {
                   Runs locally in your browser. No video is uploaded.
                 </p>
                 <p className="coldstart-note">
-                  First prediction may take 30 to 60 seconds while the Render backend wakes up.
+                  First prediction may take 60 to 120 seconds while the Render backend wakes up.
                 </p>
               </div>
             </div>

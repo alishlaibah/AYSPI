@@ -1,13 +1,26 @@
+import io
 import os
+import re
+import sys
 import json
 from typing import Dict, List
 
-# quiet tensorflow logs
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
+
+_TF_NOISE = re.compile(
+    r"Unable to register cu(?:DNN|BLAS) factory"
+    r"|computation placer already registered"
+)
+_buf = io.StringIO()
+_old_stderr, sys.stderr = sys.stderr, _buf
+import tensorflow as tf
+sys.stderr = _old_stderr
+for _line in _buf.getvalue().splitlines():
+    if not _TF_NOISE.search(_line):
+        print(_line, file=sys.stderr)
 
 import joblib
 import numpy as np
-import tensorflow as tf
 
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
