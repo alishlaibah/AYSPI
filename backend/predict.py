@@ -58,6 +58,9 @@ if not os.path.exists(MODEL_PATH):
 if not os.path.exists(SCALER_PATH):
     raise FileNotFoundError(f"Scaler not found: {SCALER_PATH}")
 
+for _gpu in tf.config.experimental.list_physical_devices('GPU'):
+    tf.config.experimental.set_memory_growth(_gpu, True)
+
 model = tf.keras.models.load_model(MODEL_PATH, compile=False)
 scaler = joblib.load(SCALER_PATH)
 
@@ -78,13 +81,9 @@ def _resample_or_pad(seq: np.ndarray, target_frames: int) -> np.ndarray:
 
 
 def _wrist_relative(seq: np.ndarray) -> np.ndarray:
-    seq_rel = seq.copy()
-    for t in range(seq_rel.shape[0]):
-        frame = seq_rel[t].reshape(21, 3)
-        wrist = frame[0]
-        frame = frame - wrist
-        seq_rel[t] = frame.reshape(63)
-    return seq_rel
+    seq_rel = seq.reshape(seq.shape[0], 21, 3)
+    seq_rel = seq_rel - seq_rel[:, 0:1, :]
+    return seq_rel.reshape(seq.shape[0], -1)
 
 
 def _prepare_sequence(landmarks: List[float]) -> np.ndarray:
@@ -119,7 +118,7 @@ def predict(landmarks: List[float]) -> Dict[str, float | str]:
     seq_scaled = scaler.transform(seq_flat)
     seq_input = seq_scaled.reshape(1, SEQ_LEN, FEATURES_PER_FRAME)
 
-    probs = model.predict(seq_input, verbose=0)[0]
+    probs = model(seq_input, training=False).numpy()[0]
     pred_index = int(np.argmax(probs))
     pred_conf = float(np.max(probs))
 
