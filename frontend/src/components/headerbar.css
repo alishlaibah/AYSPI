@@ -1,87 +1,76 @@
 .header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  height: var(--header-h);
-  display: flex;
-  align-items: center;
-  background: rgba(11, 15, 20, 0.75);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--rule);
+  background: var(--bg);
 }
 
 .header-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
+  gap: var(--sp-4);
+  min-height: var(--header-h);
 }
 
 .brand {
   display: flex;
-  flex-direction: column;
-  gap: 2px;
+  align-items: baseline;
+  flex-wrap: wrap;
+  column-gap: var(--sp-3);
+  row-gap: 0;
+  color: var(--ink);
   text-decoration: none;
 }
 
 .brand-name {
-  font-family: var(--font-sans);
-  font-weight: var(--weight-bold);
   font-size: var(--text-base);
-  color: var(--text-primary);
+  font-weight: var(--weight-semi);
   letter-spacing: -0.01em;
+  color: var(--ink);
 }
 
 .brand-sub {
-  font-size: var(--text-xs);
-  color: var(--text-muted);
-  font-weight: var(--weight-normal);
+  position: relative;
+  padding-left: var(--sp-3);
+  font-size: var(--text-sm);
+  color: var(--ink-2);
+}
+
+.brand-sub::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 1px;
+  height: 14px;
+  background: var(--rule-strong);
+  transform: translateY(-50%);
 }
 
 .header-icons {
   display: flex;
   align-items: center;
-  gap: var(--sp-2);
+  gap: var(--sp-1);
+  margin-right: -10px;
 }
 
 .header-icon-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border);
-  background: transparent;
-  color: var(--text-secondary);
-  text-decoration: none;
-  cursor: pointer;
-  transition:
-    color var(--duration) var(--ease),
-    border-color var(--duration) var(--ease),
-    background var(--duration) var(--ease),
-    transform var(--duration) var(--ease);
+  width: 44px;
+  height: 44px;
+  color: var(--ink-2);
+  transition: color var(--dur-fast) var(--ease-out);
 }
 
 .header-icon-btn:hover {
-  color: var(--text-primary);
-  border-color: var(--border-strong);
-  background: var(--accent-soft);
-  transform: translateY(-1px);
+  color: var(--ink);
 }
 
 .header-icon-btn:focus-visible {
-  outline: 2px solid rgba(196, 122, 58, 0.55);
-  outline-offset: 2px;
+  outline-offset: 0;
 }
 
 .header-icon-btn svg {
   flex-shrink: 0;
-}
-
-@media (max-width: 640px) {
-  .brand-sub {
-    display: none;
-  }
 }

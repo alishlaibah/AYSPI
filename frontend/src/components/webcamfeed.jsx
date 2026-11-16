@@ -170,7 +170,7 @@ function WebcamFeed({ showLandmarks = true }) {
           z: lm.z,
         }));
 
-        ctx.strokeStyle = "#C47A3A";
+        ctx.strokeStyle = "#3DDF7D";
         ctx.lineWidth = 2;
         ctx.lineCap = "round";
         ctx.lineJoin = "round";
@@ -185,7 +185,7 @@ function WebcamFeed({ showLandmarks = true }) {
           ctx.stroke();
         }
 
-        ctx.fillStyle = "#2B5F6B";
+        ctx.fillStyle = "#3DDF7D";
 
         for (const lm of transformedLandmarks) {
           ctx.beginPath();
@@ -193,8 +193,8 @@ function WebcamFeed({ showLandmarks = true }) {
           ctx.fill();
         }
 
-        ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";
-        ctx.lineWidth = 1;
+        ctx.strokeStyle = "#111417";
+        ctx.lineWidth = 1.5;
 
         for (const lm of transformedLandmarks) {
           ctx.beginPath();
@@ -293,13 +293,31 @@ function WebcamFeed({ showLandmarks = true }) {
           onLoadedMetadata={handleVideoMetadata}
         />
         <canvas ref={canvasRef} className="webcam-canvas" />
+
+        <div
+          className={`webcam-status ${
+            status === "Hand detected" ? "webcam-status--active" : ""
+          }`}
+        >
+          <span className="webcam-status-dot" />
+          <span className="webcam-status-text">{status}</span>
+        </div>
+
+        {error && <div className="webcam-error">{error}</div>}
       </div>
 
       <div className="webcam-output">
-        <div className="webcam-prediction-row">
+        <div className="webcam-readout">
           <div className="webcam-prediction-block">
             <span className="webcam-label">Prediction</span>
-            <span className="webcam-prediction-letter">{prediction.confidence < 0.20 ? "Unknown" : prediction.letter}</span>
+            <span
+              key={prediction.letter}
+              className={`webcam-prediction-letter ${
+                prediction.confidence < 0.20 ? "is-unknown" : ""
+              }`}
+            >
+              {prediction.confidence < 0.20 ? "Unknown" : prediction.letter}
+            </span>
           </div>
 
           <div className="webcam-confidence-block">
@@ -314,17 +332,7 @@ function WebcamFeed({ showLandmarks = true }) {
           </div>
         </div>
 
-        <div className="webcam-status-row">
-          <span
-            className={`webcam-status-dot ${
-              status === "Hand detected" ? "webcam-status-dot--active" : ""
-            }`}
-          />
-          <span className="webcam-status-text">{status}</span>
-        </div>
-
         {backendInfo && <div className="webcam-info">{backendInfo}</div>}
-        {error && <div className="webcam-error">{error}</div>}
       </div>
     </div>
   );

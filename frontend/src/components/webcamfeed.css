@@ -1,18 +1,46 @@
 .webcam-shell {
   display: flex;
   flex-direction: column;
-  gap: var(--sp-4);
   width: 100%;
 }
 
+/* ───────── Viewfinder: the page's only container ───────── */
+
 .webcam-stage {
+  --mark: var(--on-stage-2);
+  --mark-len: 18px;
+  --mark-inset: 14px;
+
   position: relative;
   width: 100%;
   aspect-ratio: var(--cam-aspect, 1.3333);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-stage);
   overflow: hidden;
-  background: #000;
-  border: 1px solid var(--border);
+  background-color: var(--stage);
+  /* Centre crosshair: visible until the video covers it */
+  background-image:
+    linear-gradient(var(--stage-line), var(--stage-line)),
+    linear-gradient(var(--stage-line), var(--stage-line));
+  background-size: 1px 40px, 40px 1px;
+  background-position: center, center;
+  background-repeat: no-repeat;
+}
+
+/* Corner marks, drawn over the live feed */
+.webcam-stage::after {
+  content: "";
+  position: absolute;
+  inset: var(--mark-inset);
+  pointer-events: none;
+  background:
+    linear-gradient(var(--mark), var(--mark)) top left / var(--mark-len) 1px no-repeat,
+    linear-gradient(var(--mark), var(--mark)) top left / 1px var(--mark-len) no-repeat,
+    linear-gradient(var(--mark), var(--mark)) top right / var(--mark-len) 1px no-repeat,
+    linear-gradient(var(--mark), var(--mark)) top right / 1px var(--mark-len) no-repeat,
+    linear-gradient(var(--mark), var(--mark)) bottom left / var(--mark-len) 1px no-repeat,
+    linear-gradient(var(--mark), var(--mark)) bottom left / 1px var(--mark-len) no-repeat,
+    linear-gradient(var(--mark), var(--mark)) bottom right / var(--mark-len) 1px no-repeat,
+    linear-gradient(var(--mark), var(--mark)) bottom right / 1px var(--mark-len) no-repeat;
 }
 
 .webcam-video {
@@ -21,7 +49,7 @@
   object-fit: contain;
   object-position: center;
   display: block;
-  background: #000;
+  background: transparent;
 }
 
 .webcam-canvas {
@@ -32,113 +60,212 @@
   pointer-events: none;
 }
 
+/* Mirror the feed and its overlay together (selfie view). Display only:
+   the landmarks sent to /predict are untouched. */
+.webcam-video,
+.webcam-canvas {
+  transform: scaleX(-1);
+}
+
+/* Status readout, top-left inside the viewfinder */
+.webcam-status {
+  position: absolute;
+  top: calc(var(--mark-inset) + 8px);
+  left: calc(var(--mark-inset) + 8px);
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 5px var(--sp-3) 5px 10px;
+  background: var(--stage);
+  border-radius: var(--radius-stage);
+  font-family: var(--font-mono);
+  font-size: var(--text-mono-sm);
+  line-height: 1.4;
+  color: var(--on-stage);
+}
+
+.webcam-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 1px solid var(--on-stage-2);
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out);
+}
+
+.webcam-status--active .webcam-status-dot {
+  background: var(--signal-bright);
+  border-color: var(--signal-bright);
+}
+
+/* Error strip along the viewfinder's bottom edge */
+.webcam-error {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: var(--sp-3) calc(var(--mark-inset) + 8px);
+  background: var(--stage);
+  border-top: 1px solid var(--stage-line);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--on-stage);
+}
+
+.webcam-error::before {
+  content: "";
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  background: var(--error);
+  transform: translateY(-1px);
+}
+
+/* ───────── Readout ───────── */
+
 .webcam-output {
   display: flex;
   flex-direction: column;
-  gap: var(--sp-3);
-  padding: var(--sp-4);
-  border-radius: var(--radius-lg);
-  background: var(--surface-2);
-  border: 1px solid var(--border);
 }
 
-.webcam-prediction-row {
+.webcam-readout {
+  display: grid;
+  grid-template-columns: minmax(9.5rem, 2fr) minmax(0, 5fr);
+  border-bottom: 1px solid var(--rule);
+}
+
+.webcam-prediction-block,
+.webcam-confidence-block {
   display: flex;
-  gap: var(--sp-5);
-  align-items: flex-end;
+  flex-direction: column;
+  padding-top: var(--sp-3);
+  padding-bottom: var(--sp-3);
 }
 
 .webcam-prediction-block {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-1);
-}
-
-.webcam-label {
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--text-muted);
-  font-weight: var(--weight-medium);
-}
-
-.webcam-prediction-letter {
-  font-family: var(--font-mono);
-  font-size: var(--text-3xl);
-  font-weight: var(--weight-bold);
-  color: var(--text-primary);
-  line-height: 1;
+  padding-right: var(--sp-5);
+  border-right: 1px solid var(--rule);
 }
 
 .webcam-confidence-block {
-  flex: 1;
+  padding-left: var(--sp-5);
+}
+
+.webcam-label {
+  font-size: var(--text-sm);
+  line-height: 1.4;
+  color: var(--ink-2);
+}
+
+.webcam-prediction-letter {
   display: flex;
-  flex-direction: column;
-  gap: var(--sp-1);
+  align-items: flex-end;
+  height: var(--text-readout);
+  margin-top: var(--sp-1);
+  font-family: var(--font-mono);
+  font-size: var(--text-readout);
+  font-weight: var(--weight-normal);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  animation: readout-settle 160ms var(--ease-out);
+}
+
+.webcam-prediction-letter.is-unknown {
+  font-size: var(--text-lg);
+  letter-spacing: 0;
+  color: var(--ink-2);
+  padding-bottom: 0.25em;
 }
 
 .webcam-confidence-value {
+  display: flex;
+  align-items: flex-end;
+  height: var(--text-readout);
+  margin-top: var(--sp-1);
   font-family: var(--font-mono);
-  font-size: var(--text-lg);
-  font-weight: var(--weight-bold);
-  color: var(--text-primary);
+  font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem);
+  font-weight: var(--weight-normal);
   line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+  padding-bottom: 0.1em;
 }
 
+/* Thin, precise bar with quarter ticks */
 .webcam-confidence-bar {
-  height: 4px;
-  border-radius: var(--radius-pill);
-  background: rgba(255, 255, 255, 0.08);
-  overflow: hidden;
+  position: relative;
+  height: 2px;
+  margin-top: var(--sp-3);
+  margin-bottom: 7px;
+  background: var(--rule);
+}
+
+.webcam-confidence-bar::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 2px;
+  height: 5px;
+  pointer-events: none;
+  background-image: linear-gradient(to right, var(--rule-strong) 1px, transparent 1px);
+  background-size: calc(25% - 0.25px) 100%;
+  background-repeat: repeat-x;
+  border-right: 1px solid var(--rule-strong);
 }
 
 .webcam-confidence-fill {
   height: 100%;
-  border-radius: var(--radius-pill);
-  background: var(--accent);
-  transition: width 200ms var(--ease);
+  background: var(--signal);
+  transition: width var(--dur-base) var(--ease-out);
 }
 
-.webcam-status-row {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-2);
-}
-
-.webcam-status-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--text-muted);
-  flex-shrink: 0;
-}
-
-.webcam-status-dot--active {
-  background: var(--success);
-  animation: pulse-dot 1.8s ease-in-out infinite;
-}
-
-.webcam-status-text {
-  font-size: var(--text-xs);
-  color: var(--text-muted);
-}
-
+/* Backend waking: neutral pending line under the readout */
 .webcam-info {
-  font-size: var(--text-xs);
-  color: var(--text-muted);
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding-block: var(--sp-3);
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 0;
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--ink);
 }
 
-.webcam-error {
-  font-size: var(--text-xs);
-  color: var(--error);
+.webcam-info::before {
+  content: "";
+  flex-shrink: 0;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: 1px solid var(--ink-2);
+  transform: translateY(-1px);
 }
 
 @media (max-width: 480px) {
-  .webcam-output {
-    padding: var(--sp-3);
+  .webcam-stage {
+    --mark-inset: 10px;
+    --mark-len: 14px;
   }
 
-  .webcam-prediction-letter {
-    font-size: var(--text-2xl);
+  .webcam-readout {
+    grid-template-columns: minmax(7.5rem, 2fr) minmax(0, 3fr);
+  }
+
+  .webcam-prediction-block {
+    padding-right: var(--sp-4);
+  }
+
+  .webcam-confidence-block {
+    padding-left: var(--sp-4);
   }
 }

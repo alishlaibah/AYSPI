@@ -87,13 +87,13 @@ function App() {
 
       <main>
         <section id="demo" className="hero">
-          <div className="container hero-grid">
-            <div className="hero-demo animate-in">
-              <div className="card demo-card">
-                <div className="demo-card-header">
-                  <div>
-                    <h2 className="demo-card-title">Live Demo</h2>
-                    <p className="demo-card-hint">
+          <div className="container grid-12 hero-grid">
+            <div className="hero-demo">
+              <div className="demo">
+                <div className="demo-head">
+                  <div className="demo-head-text">
+                    <h2 className="demo-title">Live Demo</h2>
+                    <p className="demo-hint">
                       Keep your hand <strong>close</strong>, centered, and well-lit.
                     </p>
                   </div>
@@ -109,7 +109,7 @@ function App() {
                       <span className="toggle-label">Landmarks</span>
                     </label>
 
-                    <span className="pill">
+                    <span className="model-id">
                       Model:&nbsp;
                       <strong>asl_sequence_classifier</strong>
                     </span>
@@ -120,16 +120,18 @@ function App() {
                   <WebcamFeed showLandmarks={showLandmarks} />
                 </DemoBoundary>
 
-                <p className="privacy-note">
-                  Runs locally in your browser. No video is uploaded.
-                </p>
-                <p className="coldstart-note">
-                  First prediction may take 60 to 120 seconds while the Render backend wakes up.
-                </p>
+                <div className="demo-notes">
+                  <p className="privacy-note">
+                    Runs locally in your browser. No video is uploaded.
+                  </p>
+                  <p className="coldstart-note">
+                    First prediction may take 60 to 120 seconds while the Render backend wakes up.
+                  </p>
+                </div>
               </div>
             </div>
 
-            <div className="hero-copy animate-in animate-in-delay-1">
+            <div className="hero-copy">
               <h1 className="hero-title">
                 ASL Letter Recognition
                 <span className="hero-title-dim">Real time, in your browser.</span>
@@ -141,84 +143,94 @@ function App() {
                 Built with MediaPipe Hands for 21-point landmark extraction, a TensorFlow sequence classifier, and a FastAPI backend, all deployed for real-time inference.
               </p>
 
-              <div id="reference" className="ref-panel card">
-                <h3 className="ref-panel-title">ASL Reference</h3>
+              <figure id="reference" className="ref-figure">
+                <h2 className="ref-title">ASL Reference</h2>
                 <AlphabetReference />
-              </div>
+              </figure>
             </div>
           </div>
         </section>
 
         <section id="highlights" className="section">
-          <div className="container">
-            <h2 className="section-title animate-in">How It Works</h2>
-            <p className="section-subtitle animate-in animate-in-delay-1">
-              The core inference loop, from webcam frame to predicted letter.
-            </p>
-            <div className="pipeline-steps">
+          <div className="container grid-12 section-grid">
+            <div className="section-head">
+              <h2 className="section-title">How It Works</h2>
+              <p className="section-subtitle">
+                The core inference loop, from webcam frame to predicted letter.
+              </p>
+            </div>
+            <ol className="pipeline section-body--full">
               {PIPELINE_STEPS.map((step) => (
-                <div key={step.num} className="pipeline-step animate-in animate-in-delay-2">
-                  <span className="pipeline-num">{step.num}</span>
-                  <div>
+                <li key={step.num} className="pipeline-step">
+                  <div className="pipeline-rail">
+                    <span className="pipeline-num">{step.num}</span>
+                    <span className="pipeline-arrow" />
+                  </div>
+                  <div className="pipeline-body">
                     <h3 className="pipeline-step-title">{step.title}</h3>
                     <p className="pipeline-step-desc">{step.desc}</p>
                   </div>
-                </div>
+                </li>
               ))}
-            </div>
+            </ol>
           </div>
         </section>
 
         <section className="section">
-          <div className="container">
-            <h2 className="section-title animate-in">Building the System</h2>
-            <p className="section-subtitle animate-in animate-in-delay-1">
-              From data collection to production deployment.
-            </p>
-            <div className="build-grid">
-              <div className="build-block animate-in animate-in-delay-2">
-                <h3 className="build-block-title">Data Collection</h3>
-                <p className="build-block-text">
+          <div className="container grid-12 section-grid">
+            <div className="section-head">
+              <h2 className="section-title">Building the System</h2>
+              <p className="section-subtitle">
+                From data collection to production deployment.
+              </p>
+            </div>
+            <div className="build-notes section-body">
+              <article className="build-entry">
+                <h3 className="build-entry-title">Data Collection</h3>
+                <p className="build-entry-text">
                   I wrote a webcam-based data collection script to record and label my own training set. Collected roughly 200 to 300 samples per letter. For letters that depend on motion (like J and Z), I captured short frame sequences instead of single snapshots.
                 </p>
-              </div>
-              <div className="build-block animate-in animate-in-delay-2">
-                <h3 className="build-block-title">Training</h3>
-                <p className="build-block-text">
+              </article>
+              <article className="build-entry">
+                <h3 className="build-entry-title">Training</h3>
+                <p className="build-entry-text">
                   Trained and evaluated models in TensorFlow/Keras on the landmark sequences. Used NumPy and scikit-learn for preprocessing, normalization, and iteration. The sequence-based architecture makes classification motion-aware.
                 </p>
-              </div>
-              <div className="build-block animate-in animate-in-delay-3">
-                <h3 className="build-block-title">Deployment</h3>
-                <p className="build-block-text">
+              </article>
+              <article className="build-entry">
+                <h3 className="build-entry-title">Deployment</h3>
+                <p className="build-entry-text">
                   Packaged the final model behind a production-style FastAPI API (Uvicorn &amp; Pydantic). The backend is deployed on Render with the frontend hosted on Cloudflare Pages.
                 </p>
-              </div>
+              </article>
             </div>
           </div>
         </section>
 
         <section className="section">
-          <div className="container">
-            <h2 className="section-title animate-in">Tech Stack</h2>
-            <div className="stack-row">
+          <div className="container grid-12 section-grid">
+            <div className="section-head">
+              <h2 className="section-title">Tech Stack</h2>
+            </div>
+            <div className="stack section-body">
               {STACK.map((group) => (
                 <div key={group.label} className="stack-group">
                   <h3 className="stack-label">{group.label}</h3>
-                  <div className="pill-grid">
+                  <ul className="stack-list">
                     {group.items.map((t) => (
-                      <a
-                        key={t}
-                        className="pill"
-                        href={STACK_LINKS[t] ?? "#"}
-                        target="_blank"
-                        rel="noreferrer noopener"
-                        aria-label={`Open ${t} documentation`}
-                      >
-                        {t}
-                      </a>
+                      <li key={t}>
+                        <a
+                          className="text-link"
+                          href={STACK_LINKS[t] ?? "#"}
+                          target="_blank"
+                          rel="noreferrer noopener"
+                          aria-label={`Open ${t} documentation`}
+                        >
+                          {t}
+                        </a>
+                      </li>
                     ))}
-                  </div>
+                  </ul>
                 </div>
               ))}
             </div>
